@@ -11,6 +11,9 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <stdlib.h>
+#incluse "adc.h"
+
+enum joystick_dir{LEFT, RIGHT, UP, DOWN, NEUTRAL};
 
 //for 5 to 8 Data bits
 void USART_Transmit(unsigned char data)
@@ -97,23 +100,7 @@ uint8_t xmem_read(uint16_t addr){
 	return ret_val;
 }
 
-volatile int adc_read(uint8_t channel){
-	//printf("read\r\n");
-	if((channel <= 4 )&&( channel > 0)){
-		//printf("if\r\n");
 
-		volatile uint8_t *p = ADC_OFFSET;
-		//p[0] = channel;
-		*p = channel + 3;//+3
-		_delay_us(60);
-		//volatile uint8_t read = p[0];
-		return *p;
-		//return read;
-	}
-	else {
-		return 0;
-	}
-}
 
 
 
@@ -126,8 +113,11 @@ int main(void){
 	
 	while (1)
 	{
+		adc_test_function();	
 	
-		printf("pin %d \r\n", PINB & 1<<PB0);
+		//printf("pin %d \r\n", PINB & 1<<PB0);
+		
+		
 		/*printf("Channel 1 %d \n \r", adc_read(1));
 		printf("Channel 2 %d \n \r", adc_read(2));
 		printf("Channel 3 %d \n \r", adc_read(3));

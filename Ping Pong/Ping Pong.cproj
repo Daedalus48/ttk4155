@@ -271,6 +271,12 @@
     <Compile Include="src\config\adc.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\config\oled.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\oled.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\main.c">
       <SubType>compile</SubType>
     </Compile>

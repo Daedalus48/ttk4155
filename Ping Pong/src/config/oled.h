@@ -14,3 +14,6 @@
 
 
 #endif /* OLED_H_ */
+
+
+int oled_init();

@@ -11,7 +11,7 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <stdlib.h>
-#incluse "adc.h"
+#include "adc.h"
 
 enum joystick_dir{LEFT, RIGHT, UP, DOWN, NEUTRAL};
 
@@ -99,9 +99,15 @@ uint8_t xmem_read(uint16_t addr){
 	uint8_t ret_val = ext_mem[addr];
 	return ret_val;
 }
+/*
+string get_joystick_pos(){
+	x_axis = adc_read(1);
+	y_axis = adc_read(2);
+	
+	if(x_axis)
+}
 
-
-
+*/
 
 
 int main(void){
@@ -110,18 +116,31 @@ int main(void){
 	xmem_init();
 	uint8_t data = 5;
 	DDRB &= ~(1<<PB0);
+	//SRAM_test();
+	
+	int left_s = 0, right_s = 0, x = 0, y = 0;
 	
 	while (1)
 	{
+		
 		adc_test_function();	
+		
+		/*adc_get_slider_pos(&left_s, &right_s);
+		printf("left_s =  %d \r\n", left_s);
+		printf("right_s =  %d \r\n\r\n", right_s);
+		*/
+		_delay_ms(2500);
 	
 		//printf("pin %d \r\n", PINB & 1<<PB0);
 		
 		
-		/*printf("Channel 1 %d \n \r", adc_read(1));
+		/*printf("Function in adc.c class: \n \r");
+		printf("Channel 1 %d \n \r", adc_read(1));
 		printf("Channel 2 %d \n \r", adc_read(2));
-		printf("Channel 3 %d \n \r", adc_read(3));
-		printf("Channel 4 %d \n \r", adc_read(4));
+		printf("Slider left %d \n \r", adc_read(3));
+		printf("Slider right %d \n \r \n \r", adc_read(4));
+		
+		_delay_ms(2000);
 		//printf("hei\r\n");
 		
 		/*

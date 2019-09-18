@@ -4,5 +4,7 @@
 
 src\ASF\common\boards\user_board\init.c
 
+src\config\adc.c
+
 src\main.c
 

@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "adc.h"
+#include "oled.h"
 
 enum joystick_dir{LEFT, RIGHT, UP, DOWN, NEUTRAL};
 
@@ -120,51 +121,12 @@ int main(void){
 	
 	int left_s = 0, right_s = 0, x = 0, y = 0;
 	
-	while (1)
-	{
-		
-		adc_test_function();	
-		
-		/*adc_get_slider_pos(&left_s, &right_s);
-		printf("left_s =  %d \r\n", left_s);
-		printf("right_s =  %d \r\n\r\n", right_s);
-		*/
-		_delay_ms(2500);
-	
-		//printf("pin %d \r\n", PINB & 1<<PB0);
-		
-		
-		/*printf("Function in adc.c class: \n \r");
-		printf("Channel 1 %d \n \r", adc_read(1));
-		printf("Channel 2 %d \n \r", adc_read(2));
-		printf("Slider left %d \n \r", adc_read(3));
-		printf("Slider right %d \n \r \n \r", adc_read(4));
-		
-		_delay_ms(2000);
-		//printf("hei\r\n");
-		
-		/*
-		volatile char* adc_addr = (char*) 0x1400;
-		adc_addr[0] = 0b00000101;
-		_delay_ms(40);
-		uint8_t value = adc_addr[0];
-		printf("ADC. read: %d \n\r", value);
-		_delay_ms(0);
-		
-		/*
-		xmem_read(0x1400);
-		_delay_ms(20);
-		data = adc_read(2);
-		_delay_ms(20);
-		printf("%4d",data);
-		printf("\r\n");
-		_delay_ms(500);
-		*/
-		
-		//changes
-		
+	oled_init();
+	oled_print_char('c');
+	while(1){
 		
 	}
+	
 	return 0;
 }
 

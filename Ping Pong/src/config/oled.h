@@ -9,11 +9,35 @@
 #ifndef OLED_H_
 #define OLED_H_
 
+#define OLED_PAGES 8
+#define OLED_COLUMBS 128
+
+#define OLED_COLUMB_SET 0x21
+#define OLED_PAGE_SET 0x22
+
+#include <avr/io.h>
+
+void oled_write_c(uint8_t data);
+
+int oled_init();
+
+void oled_columb_range_select(uint8_t start, uint8_t end);
+
+void oled_page_select(uint8_t page);
+
+void oled_clear_page(uint8_t page);
+
+void oled_clear_screen();
+
+void oled_print_char_of_size(char letter, uint8_t size);
 
 
+
+void oled_write_d(uint8_t data);
+
+void oled_print_char_of_size(char letter, uint8_t size);
+
+uint8_t oled_print_char(char letter);
 
 
 #endif /* OLED_H_ */
-
-
-int oled_init();

@@ -39,7 +39,7 @@ int adc_joystick_direction();
 
 int adc_test_function();
 
-#endif /* ADC_H_ */
 
+#endif /* ADC_H_ */
 
 	

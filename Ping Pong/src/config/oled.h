@@ -35,8 +35,14 @@ void oled_clear_screen();
 
 void oled_print_char_of_size(char letter, uint8_t size);
 
+void oled_print_char_of_size_inverted(char letter, uint8_t size);
+
 uint8_t oled_print_char(char letter);
 
+uint8_t oled_print_char_inverted(char letter);
+
 void oled_printf(char text[]);
+
+void oled_printf_inverted(char text[]);
 
 #endif /* OLED_H_ */

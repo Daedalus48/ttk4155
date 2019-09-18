@@ -108,8 +108,26 @@ void oled_print_char_of_size(char letter, uint8_t size) {
 		letter_bitmap = font8[letter - ' '];
 	}
 	for (int i = 0; i < char_length; i++) {
-		oled_write_data(pgm_read_byte(&(letter_bitmap[i])));
+      oled_write_data(pgm_read_byte(&(letter_bitmap[i])));
+  }
+}
+
+void oled_print_char_of_size_inverted(char letter, uint8_t size) {
+	uint8_t char_length = 0;
+	unsigned char *letter_bitmap;
+	if (size == FONT_SIZE_SMALL) {
+		char_length = 4;
+		letter_bitmap = font4[letter - ' '];
+		} else if (size == FONT_SIZE_MEDIUM) {
+		char_length = 5;
+		letter_bitmap = font5[letter - ' '];
+		} else {
+		char_length = 8;
+		letter_bitmap = font8[letter - ' '];
 	}
+	for (int i = 0; i < char_length; i++) {
+      oled_write_data(~pgm_read_byte(&(letter_bitmap[i])));
+  }
 }
 
 uint8_t printf_page = 0;
@@ -127,11 +145,32 @@ uint8_t oled_print_char(char letter) {
 	return 0;
 }
 
+uint8_t oled_print_char_inverted(char letter) {
+	if (letter == '\n') {
+		printf_page += 1;
+		oled_page_select(printf_page);
+		oled_columb_range_select(0, OLED_COLUMBS);
+	} else {
+		oled_print_char_of_size_inverted(letter, printf_size);
+		uint8_t columb_adder = 0;
+	}
+	return 0;
+}
+
 void oled_printf(char text[]){
 	int lenght = strlen(text);
 	printf("size =  %d \r\n", lenght);
 	for (int c = 0; c<lenght; c++){
 		printf("letter =  %d \r\n", c);
 		oled_print_char(text[c]);
+	}
+}
+
+void oled_printf_inverted(char text[]){
+	int lenght = strlen(text);
+	printf("size =  %d \r\n", lenght);
+	for (int c = 0; c<lenght; c++){
+		printf("letter =  %d \r\n", c);
+		oled_print_char_inverted(text[c]);
 	}
 }

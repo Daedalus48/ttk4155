@@ -122,7 +122,7 @@ int main(void){
 	int left_s = 0, right_s = 0, x = 0, y = 0;
 	
 	oled_init();
-	oled_printf("hello world");
+	oled_printf_inverted("hello world");
 	while(1){
 		
 	}

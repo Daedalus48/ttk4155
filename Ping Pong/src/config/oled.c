@@ -16,8 +16,12 @@ enum oled_font_size{FONT_SIZE_LARGE, FONT_SIZE_MEDIUM, FONT_SIZE_SMALL};
 
 
 
+void oled_write_c(uint8_t data) {
+	volatile uint8_t *adress = OLEDC_OFFSET;
+	*adress = data;
+}
 
-void oled_write_d(uint8_t data) {
+void oled_write_data(uint8_t data) {
 	volatile uint8_t *adress = OLEDD_OFFSET;
 	*adress = data;
 }
@@ -46,11 +50,6 @@ int oled_init(){
 	oled_write_c(0xa6);	//set normal display
 	oled_write_c(0xaf);	//display on
 	oled_clear_screen();
-}
-
-void oled_write_c(uint8_t data) {
-	volatile uint8_t *adress = OLEDC_OFFSET;
-	*adress = data;
 }
 
 void oled_columb_range_select(uint8_t start, uint8_t end) {
@@ -84,7 +83,7 @@ void oled_clear_page(uint8_t page) {
 		oled_page_select(page);
 		oled_columb_range_select(0, OLED_COLUMBS - 1);
 		for (int i = 0; i < OLED_COLUMBS; i++) {
-			oled_write_d(0x00);
+			oled_write_data(0x00);
 		}
 	}
 }
@@ -109,7 +108,7 @@ void oled_print_char_of_size(char letter, uint8_t size) {
 		letter_bitmap = font8[letter - ' '];
 	}
 	for (int i = 0; i < char_length; i++) {
-		oled_write_d(pgm_read_byte(&(letter_bitmap[i])));
+		oled_write_data(pgm_read_byte(&(letter_bitmap[i])));
 	}
 }
 
@@ -126,4 +125,13 @@ uint8_t oled_print_char(char letter) {
 		uint8_t columb_adder = 0;
 	}
 	return 0;
+}
+
+void oled_printf(char text[]){
+	int lenght = strlen(text);
+	printf("size =  %d \r\n", lenght);
+	for (int c = 0; c<lenght; c++){
+		printf("letter =  %d \r\n", c);
+		oled_print_char(text[c]);
+	}
 }

@@ -16,8 +16,12 @@
 #define OLED_PAGE_SET 0x22
 
 #include <avr/io.h>
+#include <stdio.h>
+#include <string.h>
 
 void oled_write_c(uint8_t data);
+
+void oled_write_data(uint8_t data);
 
 int oled_init();
 
@@ -31,13 +35,8 @@ void oled_clear_screen();
 
 void oled_print_char_of_size(char letter, uint8_t size);
 
-
-
-void oled_write_d(uint8_t data);
-
-void oled_print_char_of_size(char letter, uint8_t size);
-
 uint8_t oled_print_char(char letter);
 
+void oled_printf(char text[]);
 
 #endif /* OLED_H_ */

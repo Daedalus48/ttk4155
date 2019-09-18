@@ -27,7 +27,7 @@ volatile int adc_read(uint8_t channel){
 		return 0;
 	}
 }
-
+/*
 int adc_slider_adjust(int value){
 	int ans = value * 200;
 	ans = ans/250;
@@ -41,7 +41,9 @@ int adc_slider_adjust(int value){
 
 int adc_joystick_adjust(int value){
 	int ans = value * 200;
+	
 	ans = ans/250;
+	
 	ans = ans - 100;
 	
 	if (ans<-100){
@@ -52,30 +54,35 @@ int adc_joystick_adjust(int value){
 		ans = 0;
 	}
 	return ans;
-}
+}*/
 
 int adc_get_slider_pos(int *left_s, int *right_s){
-	int left_temp = adc_read(3);
-	int right_temp = adc_read(4);
-	*left_s = adc_slider_adjust(left_temp);
-	*right_s = adc_slider_adjust(right_temp);
+	*left_s = adc_read(3);
+	*right_s = adc_read(4);
+	//*left_s = adc_slider_adjust(left_temp);
+	//*right_s = adc_slider_adjust(right_temp);
 	return 0;
 }
 
 int adc_get_joystick_pos(int *y, int *x){
-	int y_temp = adc_read(2);
-	int x_temp = adc_read(1);
-	*y = adc_joystick_adjust(y_temp);
-	*x = adc_joystick_adjust(x_temp);
+	*y = adc_read(2);
+	*x = adc_read(1);
+	//*y = adc_joystick_adjust(y_temp);
+	//*x = adc_joystick_adjust(x_temp);
 	return 0;
 }
 
-int adc_joystick_angle(){
+int adc_joystick_angle(){	//still problematic
 	int x = 0, y = 0;
-	adc_get_joystick_pos(&y, &x);
-	return atan(x/y);
+	x = adc_read(1)-140;
+	y = adc_read(2)-140;
+	int ans = atan(x/y);
+	if (abs(x)<30 && abs(y)<30){
+		ans = 0;
+	}
+	return ans;
 }
-
+/*
 int adc_joystick_direction(){
 	int x = 0, y = 0;
 	int ans = NEUTRAL;
@@ -93,9 +100,9 @@ int adc_joystick_direction(){
 			ans = RIGHT;
 		}
 	}return ans;
-}
+}*/
 
-int adc_joystick_direction_dummy(){
+int adc_joystick_direction(){
 	int x = 0, y = 0;
 	x = adc_read(1)-140;
 	y = adc_read(2)-140;
@@ -130,6 +137,5 @@ int adc_test_function(){
 	printf("right slider =  %d \r\n", right_s);
 	printf("joystick angle =  %d \r\n", adc_joystick_angle());
 	printf("joystick direction =  %d \r\n", adc_joystick_direction());
-	printf("joystick direction_dummy =  %d \r\n", adc_joystick_direction_dummy());
 	return 0;
 }

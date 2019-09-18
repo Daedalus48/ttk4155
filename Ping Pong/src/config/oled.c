@@ -6,7 +6,7 @@
  */ 
 
 
-
+/*
 int oled_init(){
 	write_c(0xae);	//display off
 	write_c(0xa1);	//segment remap
@@ -30,4 +30,4 @@ int oled_init(){
 	write_c(0xa4);	//out follows RAM content
 	write_c(0xa6);	//set normal display
 	write_c(0xaf);	//display on
-}
+}*/

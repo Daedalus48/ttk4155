@@ -19,6 +19,12 @@
 #include <stdio.h>
 #include <string.h>
 
+struct oled_activity 
+{
+	char oled_string[2][10]; //precise column and rows in the [][]
+	struct oled_activity *sub_activity[2];
+}oled_activity;
+
 void oled_write_c(uint8_t data);
 
 void oled_write_data(uint8_t data);
@@ -44,5 +50,9 @@ uint8_t oled_print_char_inverted(char letter);
 void oled_printf(char text[]);
 
 void oled_printf_inverted(char text[]);
+
+void oled_display_activity();
+
+void oled_actualise_joy_pos(int joy_direction);
 
 #endif /* OLED_H_ */

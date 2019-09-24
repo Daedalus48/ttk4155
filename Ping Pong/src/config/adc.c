@@ -6,11 +6,13 @@
  */ 
 #include "adc.h"
 
-enum adc_joystick_dir{LEFT, RIGHT, UP, DOWN, NEUTRAL};
 
+int joy_adc_direction;
 
-
-
+void adc_init()
+{
+	joy_adc_direction = NEUTRAL;
+}
 
 volatile int adc_read(uint8_t channel){
 	if((channel <= 4 )&&( channel > 0)){
@@ -123,6 +125,16 @@ int adc_joystick_direction(){
 		ans = NEUTRAL;
 	}
 	return ans;
+}
+
+int adc_joy_pos_changed(){
+	int previous_joy_adc_direction = joy_adc_direction;
+	joy_adc_direction = adc_joystick_direction();
+	
+	if(previous_joy_adc_direction = joy_adc_direction || joy_adc_direction == LEFT || joy_adc_direction == RIGHT)
+		return 0;
+	else
+		return joy_adc_direction;
 }
 
 int adc_test_function(){

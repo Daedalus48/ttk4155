@@ -12,8 +12,16 @@
 #include "fonts.h"
 
 enum oled_font_size{FONT_SIZE_LARGE, FONT_SIZE_MEDIUM, FONT_SIZE_SMALL};
+enum adc_joystick_dir{LEFT, RIGHT, UP, DOWN, NEUTRAL};
+	
+struct oled_activity may_spring = {"Birds", "Sun rays", NULL, NULL};
+struct oled_activity july_summer = {"Beach", "Sun burnt", NULL, NULL}; 
 
+struct oled_activity oled_main = {"Spring", "Summer", &may_spring, &july_summer};
+	
+struct oled_activity *current_activity = NULL;
 
+int joy_pos;
 
 
 void oled_write_c(uint8_t data) {
@@ -50,6 +58,9 @@ int oled_init(){
 	oled_write_c(0xa6);	//set normal display
 	oled_write_c(0xaf);	//display on
 	oled_clear_screen();
+	current_activity = &oled_main;
+	joy_pos = 0;
+	oled_display_activity();
 }
 
 void oled_columb_range_select(uint8_t start, uint8_t end) {
@@ -173,4 +184,26 @@ void oled_printf_inverted(char text[]){
 		printf("letter =  %d \r\n", c);
 		oled_print_char_inverted(text[c]);
 	}
+}
+
+void oled_display_activity(){
+	for(int i = 0; i < 2; i++)
+	{
+		if(joy_pos == i)
+			oled_printf_inverted(current_activity->oled_string[i]);
+		else
+			oled_printf(current_activity->oled_string[i]);
+	}
+	if(joy_pos == 3)
+		oled_printf_inverted("Return");
+	else
+		oled_printf("Return");	
+}
+
+void oled_actualise_joy_pos(int joy_direction)
+{
+	if(joy_direction == UP)
+		joy_pos = (joy_pos--)%3;
+	else if(joy_direction == DOWN)
+		joy_pos = (joy_pos++)%3;
 }

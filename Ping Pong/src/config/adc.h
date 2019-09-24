@@ -18,8 +18,9 @@
 
 #define ADC_OFFSET 0x1400
 
+enum adc_joystick_dir{LEFT, RIGHT, UP, DOWN, NEUTRAL};
 
-
+void adc_init();
 
 volatile int adc_read(uint8_t channel);
 
@@ -38,6 +39,8 @@ int adc_joystick_angle();
 int adc_joystick_direction();
 
 int adc_test_function();
+
+int adc_joy_pos_changed();
 
 
 #endif /* ADC_H_ */

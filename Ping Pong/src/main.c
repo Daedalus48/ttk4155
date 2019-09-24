@@ -14,7 +14,6 @@
 #include "adc.h"
 #include "oled.h"
 
-enum joystick_dir{LEFT, RIGHT, UP, DOWN, NEUTRAL};
 
 //for 5 to 8 Data bits
 void USART_Transmit(unsigned char data)
@@ -100,15 +99,6 @@ uint8_t xmem_read(uint16_t addr){
 	uint8_t ret_val = ext_mem[addr];
 	return ret_val;
 }
-/*
-string get_joystick_pos(){
-	x_axis = adc_read(1);
-	y_axis = adc_read(2);
-	
-	if(x_axis)
-}
-
-*/
 
 
 int main(void){
@@ -120,11 +110,16 @@ int main(void){
 	//SRAM_test();
 	
 	int left_s = 0, right_s = 0, x = 0, y = 0;
-	
+	int temp_value;
 	oled_init();
-	oled_printf_inverted("hello world");
+	adc_init();
+	//oled_printf_inverted("hello world");
 	while(1){
-		
+		if(temp_value == adc_joy_pos_changed())
+		{
+			oled_actualise_joy_pos(temp_value);
+			oled_display_activity();			
+		}
 	}
 	
 	return 0;

@@ -14,12 +14,12 @@
 enum oled_font_size{FONT_SIZE_LARGE, FONT_SIZE_MEDIUM, FONT_SIZE_SMALL};
 enum adc_joystick_dir{LEFT, RIGHT, UP, DOWN, NEUTRAL};
 	
-struct oled_activity may_spring = {"Birds", "Sun rays", NULL, NULL};
-struct oled_activity july_summer = {"Beach", "Sun burnt", NULL, NULL}; 
+//struct oled_activity may_spring = {"Birds \n", "Sun rays \n", NULL, NULL};
+//struct oled_activity july_summer = {"Beach \n", "Sun burnt \n", NULL, NULL}; 
 
-struct oled_activity oled_main = {"Spring", "Summer", &may_spring, &july_summer};
+//struct oled_activity oled_main = {"Spring \n", "Summer \n", NULL, NULL};
 	
-struct oled_activity *current_activity = NULL;
+//struct oled_activity *current_activity = NULL;
 
 int joy_pos;
 
@@ -58,9 +58,9 @@ int oled_init(){
 	oled_write_c(0xa6);	//set normal display
 	oled_write_c(0xaf);	//display on
 	oled_clear_screen();
-	current_activity = &oled_main;
+	//current_activity = &oled_main;
 	joy_pos = 0;
-	oled_display_activity();
+	//oled_display_activity();
 }
 
 void oled_columb_range_select(uint8_t start, uint8_t end) {
@@ -170,40 +170,71 @@ uint8_t oled_print_char_inverted(char letter) {
 
 void oled_printf(char text[]){
 	int lenght = strlen(text);
-	printf("size =  %d \r\n", lenght);
+	//printf("size =  %d \r\n", lenght);
 	for (int c = 0; c<lenght; c++){
-		printf("letter =  %d \r\n", c);
+		//printf("letter =  %d \r\n", c);
 		oled_print_char(text[c]);
 	}
 }
 
 void oled_printf_inverted(char text[]){
 	int lenght = strlen(text);
-	printf("size =  %d \r\n", lenght);
+	//printf("size =  %d \r\n", lenght);
 	for (int c = 0; c<lenght; c++){
-		printf("letter =  %d \r\n", c);
+		//printf("letter =  %d \r\n", c);
 		oled_print_char_inverted(text[c]);
 	}
 }
 
 void oled_display_activity(){
-	for(int i = 0; i < 2; i++)
+	oled_clear_screen();
+	
+	
+	/*for(int i = 0; i < 2; i++)
 	{
+		oled_page_select(i+1);
 		if(joy_pos == i)
 			oled_printf_inverted(current_activity->oled_string[i]);
 		else
 			oled_printf(current_activity->oled_string[i]);
-	}
-	if(joy_pos == 3)
-		oled_printf_inverted("Return");
+	}*/
+	oled_page_select(1);
+	if(joy_pos == 0)
+		oled_printf_inverted("Spring \n");
 	else
-		oled_printf("Return");	
+		oled_printf("Spring \n");
+	
+	oled_page_select(2);
+	if(joy_pos == 1)
+		oled_printf_inverted("Summer \n");
+	else
+		oled_printf("Summer \n");
+	
+	oled_page_select(3);
+	if(joy_pos == 2)
+		oled_printf_inverted("Return \n");
+	else
+		oled_printf("Return \n");
 }
 
 void oled_actualise_joy_pos(int joy_direction)
 {
+	
 	if(joy_direction == UP)
-		joy_pos = (joy_pos--)%3;
+		if (joy_pos==0){
+			joy_pos=2;
+		}else{
+			joy_pos = (joy_pos - 1);
+		}
 	else if(joy_direction == DOWN)
-		joy_pos = (joy_pos++)%3;
+		if (joy_pos==2){
+			joy_pos=0;
+		}else{
+			joy_pos = (joy_pos + 1)%3;
+		}
+
+}
+
+int oled_get_joy_pos(){
+	return joy_pos;
 }

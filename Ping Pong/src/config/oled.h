@@ -21,7 +21,7 @@
 
 struct oled_activity 
 {
-	char oled_string[2][10]; //precise column and rows in the [][]
+	char oled_string[2][OLED_COLUMBS]; //precise column and rows in the [][]
 	struct oled_activity *sub_activity[2];
 }oled_activity;
 
@@ -54,5 +54,7 @@ void oled_printf_inverted(char text[]);
 void oled_display_activity();
 
 void oled_actualise_joy_pos(int joy_direction);
+
+int oled_get_joy_pos();
 
 #endif /* OLED_H_ */

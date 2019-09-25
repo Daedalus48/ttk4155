@@ -121,20 +121,28 @@ int adc_joystick_direction(){
 		}else if(x>0){
 			ans = RIGHT;
 		}
-	}if (abs(x)<20 && abs(y)<20){
+	}if (abs(x)<30 && abs(y)<30){
 		ans = NEUTRAL;
 	}
 	return ans;
 }
 
 int adc_joy_pos_changed(){
+	int ans = 0;
 	int previous_joy_adc_direction = joy_adc_direction;
 	joy_adc_direction = adc_joystick_direction();
+	/*printf("in adc joy pos changed \n \r");
+	printf("previous joy adc %d \n \r", previous_joy_adc_direction);
+	printf("joy adc direction %d \n \r", joy_adc_direction);*/
 	
-	if(previous_joy_adc_direction = joy_adc_direction || joy_adc_direction == LEFT || joy_adc_direction == RIGHT)
-		return 0;
-	else
-		return joy_adc_direction;
+	if(previous_joy_adc_direction == joy_adc_direction || joy_adc_direction == LEFT || joy_adc_direction == RIGHT || joy_adc_direction == NEUTRAL){
+		ans = 0;
+	}
+	else{
+		ans = joy_adc_direction;
+	}
+	//printf("answer % d \n \r \n \r", ans);
+	return ans;
 }
 
 int adc_test_function(){

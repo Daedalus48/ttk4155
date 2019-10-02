@@ -7,14 +7,40 @@
 #include "can.h"
 #include "MCP2515.h"
 #include <stdio.h>
+#include <util/delay.h>
 
 
 uint8_t can_init(){
 	uint8_t value;
 	spi_init(); // Initialize SPI
 	can_reset(); // Send reset-command
+	_delay_ms(20);
+	//can_write(MCP_CANCTRL, MODE_CONFIG);
+	value = can_read(MCP_CANSTAT);
+	
+	uint8_t mode_bits = (value & MODE_MASK);
+	
+	if(mode_bits != MODE_CONFIG){
+		printf("first MCP2515 is NOT in Configuration mode after reset! Its config bits are %x\n", mode_bits);
+		return 1;
+	}
+	
+	can_write(MCP_CANCTRL, MODE_LOOPBACK);
+
+	
+	value = can_read(MCP_CANSTAT);
+	mode_bits = (value & MODE_MASK);
+	
+	if(mode_bits != MODE_LOOPBACK){
+		
+		printf("MCP2515 is NOT in correct mode after reset! Its config bits are %x\n", mode_bits);
+		printf("\n!\n");
+		return 1;
+	}
+	
 	// Self-test
-	/*can_read(MCP_CANSTAT, &value);
+	/*
+	can_read(MCP_CANSTAT, &value);
 	if ((value & MODE_MASK) != MODE_CONFIG) {
 		printf(”MCP2515 is NOT in configuration mode
 		after reset!\n”);
@@ -56,7 +82,7 @@ void can_write(uint8_t address, uint8_t data) {
 	spi_write(address);
 	
 	printf("Leviathan\r\n");
-	spi_write(data);   //sekvens feiler her
+	spi_write(data);
 	
 	printf("Belphegor\r\n");
 	
@@ -99,9 +125,14 @@ void can_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
 }
 
 void can_reset() {
+	PORTB &= ~(1<<PB4);
+	spi_write(MCP_RESET);
+	PORTB |= (1<<PB4);
+	_delay_ms(10);	//a small delay after mcp reset
+	/*
 	uint8_t cmd[] = {MCP_RESET};
 	spi_transmit(cmd, 1);
-
+	*/
 	// CS LOW
 	// Send MCP_RESET
 	// CS HIGH

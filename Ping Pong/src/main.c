@@ -127,12 +127,13 @@ int main(void){
 	//can_init();
 	int bee = 0;
 	int luc = 0;
+	can_driver_init();
 	void exercise5(void) {
 		
 		bee+=1;
 		printf("Beelzebub %d \r\n", bee);
 		
-		can_init();
+		
 		can_message test;
 		test.id		= 1337;
 		test.data[0]	= 'H';
@@ -152,11 +153,13 @@ int main(void){
 		can_message_send(&test2);
 		
 		printf("Mammon \r\n");
+		can_message* my_message;
 		while(1){
-			if ( can_interrupt() ){
-				luc+=1;
-				printf("Lucifer%d\r\n", luc);
-				can_handle_messages();
+			if ( can_interrupt() ){	//can_interrupt()
+				printf("flag before %d \n \r", can_get_flag());
+				my_message=can_handle_messages();
+				printf("my message :  %d \n \r", my_message);
+				printf("flag after %d \n \r", can_get_flag());
 			}
 			_delay_ms(30);
 		}

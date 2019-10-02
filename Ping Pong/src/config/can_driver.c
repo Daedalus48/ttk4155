@@ -22,10 +22,11 @@ volatile int flag = 0;
 
 ISR(INT0_vect){
 	flag = 1;
+	printf("interrupt happened \n\r");
 }
 
-void can_driver_init(uint8_t mode){
-
+void can_driver_init(){
+	printf("can driver init \n \r");
 	//mcp_2515_init(mode);
 	can_init();
 	
@@ -52,11 +53,11 @@ uint8_t can_interrupt(){
 	return 0;
 }
 
-can_message can_handle_messages(){
+can_message* can_handle_messages(){
 	uint8_t v[2] = {0};
 	
 	can_int_vect(v);
-	can_message message1;
+	can_message* message1;
 	
 	if (v[0]){
 		can_message_receive(0, &message1);
@@ -68,7 +69,7 @@ can_message can_handle_messages(){
 		return message1;
 	}
 	
-	can_message message2;
+	can_message* message2;
 	
 	if (v[1]){
 		can_message_receive(1, &message2);
@@ -164,4 +165,8 @@ int can_error(void){
 		return 1;
 	}
 	return 0;
+}
+
+int can_get_flag(){
+	return flag;
 }

@@ -15,6 +15,7 @@
 #include <avr/interrupt.h>
 #include <avr/delay.h>
 #include <avr/io.h>
+#include <stdio.h>
 
 volatile int flag = 0;
 
@@ -102,7 +103,7 @@ void can_message_send(can_message* message){
 	char id_high = ID / 8;
 	char id_low = ID % 8;
 	id_low = id_low*0b100000;
-	can_write(MCP_TXB0SIDH + 16 * buffer_number, id_high);
+	can_write(MCP_TXB0SIDH + 16 * buffer_number, id_high); //sekvensen feiler her
 	can_write(MCP_TXB0SIDL + 16 * buffer_number, id_low);
 	
 	// Define data length of message

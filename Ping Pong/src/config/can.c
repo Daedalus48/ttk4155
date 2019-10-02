@@ -52,7 +52,7 @@ uint8_t can_read(uint8_t address){
 void can_write(uint8_t address, uint8_t data) {
 	PORTB &= ~(1<<PB4); // Select CAN-controller
 	
-	spi_write(MCP_WRITE);
+	spi_write(MCP_WRITE);  //sekvensen feiler her
 	spi_write(address);
 	spi_write(data);
 	

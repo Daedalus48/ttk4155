@@ -145,14 +145,18 @@ int main(void){
 		test2.length	= 5;
 		can_message_send(&test);
 		can_message_send(&test2);
+		
+		printf("Lucifer\r\n");
 		while(1){
-			if ( can_interrupt()){
+			if ( can_interrupt() ){
+				printf("Lucifer\r\n");
 				can_handle_messages();
 			}
 			_delay_ms(30);
 		}
 	}
-	while(1){
+	exercise5();
+	//while(1){
 
 		/*if(temp_value = adc_joy_pos_changed())
 		{
@@ -174,8 +178,8 @@ int main(void){
 		spi_receive(received_str, strlen(str));
 		printf(received_str);*/
 		
-		exercise5();
-	}
+		
+	//}
 	
 	
 	return 0;

@@ -48,9 +48,7 @@ void spi_transmit(uint8_t *send_data, uint8_t data_length) {
 }
 
 void spi_write(uint8_t *send_data){
-	
-	printf("Lucifer\r\n");
-	spi_transmit(send_data, strlen(send_data));
+	spi_transmit(send_data, MAX_CAN_LENGTH);	//strlen(send_data)
 }
 
 uint8_t* spi_read(){

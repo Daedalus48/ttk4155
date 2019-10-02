@@ -125,8 +125,13 @@ int main(void){
 	
 	int pin = 0;
 	//can_init();
+	int bee = 0;
+	int luc = 0;
 	void exercise5(void) {
-		printf("Beelzebub\r\n");
+		
+		bee+=1;
+		printf("Beelzebub %d \r\n", bee);
+		
 		can_init();
 		can_message test;
 		test.id		= 1337;
@@ -146,10 +151,11 @@ int main(void){
 		can_message_send(&test);
 		can_message_send(&test2);
 		
-		printf("Lucifer\r\n");
+		printf("Mammon \r\n");
 		while(1){
 			if ( can_interrupt() ){
-				printf("Lucifer\r\n");
+				luc+=1;
+				printf("Lucifer%d\r\n", luc);
 				can_handle_messages();
 			}
 			_delay_ms(30);

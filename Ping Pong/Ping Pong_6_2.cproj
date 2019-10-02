@@ -271,13 +271,37 @@
     <Compile Include="src\config\adc.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\config\bit_macros.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\can.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\can.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\can_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\can_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\config\fonts.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\MCP2515.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\config\oled.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\config\oled.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\spi.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\main.c">

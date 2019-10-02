@@ -11,9 +11,12 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "adc.h"
 #include "oled.h"
-
+#include "spi.h"
+#include "can.h"
+#include "can_driver.h"
 
 //for 5 to 8 Data bits
 void USART_Transmit(unsigned char data)
@@ -105,6 +108,7 @@ int main(void){
 	
 	USART_Init(MYUBRR);
 	xmem_init();
+	
 	uint8_t data = 5;
 	DDRB &= ~(0b0111);
 	//SRAM_test();
@@ -114,17 +118,43 @@ int main(void){
 	oled_init();
 	adc_init();
 	oled_display_activity();	
-	//oled_printf_inverted("hello world");
+	
+	spi_init();
+	char* str = "lucifer";
+	char* received_str = "not changed";
 	
 	int pin = 0;
-	
+	//can_init();
+	void exercise5(void) {
+		printf("Beelzebub\r\n");
+		can_init();
+		can_message test;
+		test.id		= 1337;
+		test.data[0]	= 'H';
+		test.data[1]	= 'a';
+		test.data[2]	= 'i';
+		test.data[3]	= 'l';
+		test.length	= 4;
+		can_message test2;
+		test2.id		= 1338;
+		test2.data[0]	= 'S';
+		test2.data[1]	= 'a';
+		test2.data[2]	= 't';
+		test2.data[3]	= 'a';
+		test2.data[4]	= 'n';
+		test2.length	= 5;
+		can_message_send(&test);
+		can_message_send(&test2);
+		while(1){
+			if ( can_interrupt()){
+				can_handle_messages();
+			}
+			_delay_ms(30);
+		}
+	}
 	while(1){
-		//temp_value = adc_joy_pos_changed();
-		//printf("temp value %d \n \r", temp_value);
-		//_delay_ms(2000);
-		//printf("while \n \r");
-		//printf("return of adc joy changed %d \n \r", adc_joy_pos_changed());
-		if(temp_value = adc_joy_pos_changed())
+
+		/*if(temp_value = adc_joy_pos_changed())
 		{
 			
 			printf("temp value %d \n \r", temp_value);
@@ -133,18 +163,20 @@ int main(void){
 			_delay_ms(400);
 			
 		}
-		/*
-		printf("value PINB0 %d \n \r", PINB0);
-		printf("value PINB1 %d \n \r", PINB1);
-		printf("value PINB2 %d \n \r", PINB2);
-		printf("value PINB %d \n \r", PINB);
-		*/
+	
 		pin = (PINB & 0b0100)>>2;
-		//printf("pin  %d \n \r", pin);
 		
 		if(pin == 0)
 			printf("string number %d selected \n \r", oled_get_joy_pos());
+			
+		spi_transmit(str, strlen(str));
+		
+		spi_receive(received_str, strlen(str));
+		printf(received_str);*/
+		
+		exercise5();
 	}
+	
 	
 	return 0;
 }

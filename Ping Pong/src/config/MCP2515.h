@@ -57,23 +57,15 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_CANINTE		0x2B
 #define MCP_CANINTF		0x2C
 #define MCP_EFLG		0x2D
-
-/*Message Transmission registers*/
-#define MCP_TXRTSCTRL	0x0D		// TXnRTS Pin control and status register - Is this necessary?
-
-#define MCP_TXB0CTRL	0x30		// Transmit buffer 0 control register
-#define MCP_TXB0SIDH	0x31		// Transmit buffer 0 standard identifier high
-#define MCP_TXB0SIDL	0x32		// Transmit buffer 0 standard identifier low
-#define MCP_TXB0DLC		0x35		// Transmit buffer 0 data length code
-#define MCP_TXB0Dm		0x36		// Transmit buffer 0 Data Byte m. From 0x36 to 0x3D
-
+#define MCP_TXB0CTRL	0x30
+#define MCP_TXB0SIDH	0x31
+#define MCP_TXB0DLC		0x35
+#define MCP_TXB0D(m) (0x36 + m)
+#define MCP_TXB1CTRL	0x40
+#define MCP_TXB2CTRL	0x50
 #define MCP_RXB0CTRL	0x60
-
-#define MCP_RXB0SIDH	0x61		// Receive buffer 0 standard identifier high
-#define MCP_RXB0SIDL	0x62		// Receive buffer 0 standard identifier low
-#define MCP_RXB0DLC		0x65		// Receive buffer 0 data length code
-#define MCP_RXB0DM		0x66		// Receive buffer 0 Data Byte m. From 0x66 to 0x6D
-
+#define MCP_RXB0SIDH	0x61
+#define MCP_RXB0D(m) (0x66 + m)
 #define MCP_RXB1CTRL	0x70
 #define MCP_RXB1SIDH	0x71
 
@@ -102,8 +94,6 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_RTS_TX1		0x82
 #define MCP_RTS_TX2		0x84
 #define MCP_RTS_ALL		0x87
-
-#define MCP_RTS(TXBnnn) (0b10000000 | (TXBnnn))
 
 #define MCP_READ_RX0	0x90
 #define MCP_READ_RX1	0x94
@@ -168,5 +158,7 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_WAKIF		0x40
 #define MCP_MERRF		0x80
 
+// RXB0CTRL bitmap
+#define MCP_RXBnCTRL_NOFILTER_bm 0b01100000
 
 #endif

@@ -12,45 +12,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "usart.h"
 #include "adc.h"
 #include "oled.h"
-#include "spi.h"
-#include "can.h"
-#include "can_driver.h"
+#include "can_controller.h"
 
-//for 5 to 8 Data bits
-void USART_Transmit(unsigned char data)
-{
-	//wait for empty transmit buffer
-	while(!(UCSR0A & (1<<UDRE0)));//or UDRE1
-	
-	//Put data into buffer, sends the data
-	UDR0 = data;//or UDR1
-}
-
-unsigned char USART_Receive(void)
-{
-	//Wait for data to be received
-	while((UCSR0A & (1<<RXC0)));
-	
-	//Get and return data from buffer
-	return UDR0;//or UDR1
-}
-
-void USART_Init(unsigned int ubrr)
-{
-	// Set baud rate
-	UBRR0H = (unsigned char) (ubrr>>8);
-	UBRR0L = (unsigned char) ubrr;
-	
-	
-	// Enable receiver and transmitter
-	UCSR0B = (1<<RXEN0)  | (1<<TXEN0) | (1<<RXCIE0);
-	
-	//Set frame format: 8 data, 2 stop bit
-	UCSR0C = (1<<URSEL0) | (1<<USBS0) | (3<<UCSZ00); // or USBS1 or other one
-	fdevopen(USART_Transmit, USART_Receive);
-}
 
 
 void SRAM_test(void)
@@ -119,52 +85,45 @@ int main(void){
 	adc_init();
 	oled_display_activity();	
 	
-	spi_init();
-	char* str = "lucifer";
-	char* received_str = "not changed";
 	
-	int pin = 0;
-	//can_init();
-	int bee = 0;
-	int luc = 0;
-	can_driver_init();
-	void exercise5(void) {
-		
-		bee+=1;
-		printf("Beelzebub %d \r\n", bee);
-		
-		
-		can_message test;
-		test.id		= 1337;
-		test.data[0]	= 'H';
-		test.data[1]	= 'a';
-		test.data[2]	= 'i';
-		test.data[3]	= 'l';
-		test.length	= 4;
-		can_message test2;
-		test2.id		= 1338;
-		test2.data[0]	= 'S';
-		test2.data[1]	= 'a';
-		test2.data[2]	= 't';
-		test2.data[3]	= 'a';
-		test2.data[4]	= 'n';
-		test2.length	= 5;
-		can_message_send(&test);
-		can_message_send(&test2);
-		
-		printf("Mammon \r\n");
-		can_message* my_message;
-		while(1){
-			if ( can_interrupt() ){	//can_interrupt()
-				printf("flag before %d \n \r", can_get_flag());
-				my_message=can_handle_messages();
-				printf("my message :  %d \n \r", my_message);
-				printf("flag after %d \n \r", can_get_flag());
-			}
-			_delay_ms(30);
-		}
-	}
-	exercise5();
+	
+	
+	
+	can_init();
+	struct can_message message;
+	message.id = 3;
+	message.length = 1;
+	message.data[0] = (uint8_t) 'c';
+	
+	
+	struct can_message message2;
+	message2.id = 3;
+	message2.length = 1;
+	
+	
+	printf("In the main send %c \n\r", message.data[0]);
+	
+	can_message_send(&message);
+	_delay_ms(50);
+	can_data_receive(&message2);
+	
+	
+	printf("In the main received %c \n\r \n\r", message2.data[0]);
+	
+	message.data[0] = (uint8_t) 'g';
+	
+	printf("In the main send %c \n\r", message.data[0]);
+	
+	can_message_send(&message);
+	_delay_ms(50);
+	can_data_receive(&message2);
+	
+	
+	printf("In the main received %c \n\r \n\r", message2.data[0]);
+
+
+	
+	
 	//while(1){
 
 		/*if(temp_value = adc_joy_pos_changed())
